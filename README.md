@@ -1,5 +1,9 @@
 ## Introduction
 
+PA1_Template.rmd file contains all the required commands that are used to create
+graph which is just below the code itself.
+
+
 It is now possible to collect a large amount of data about personal
 movement using activity monitoring devices such as a
 [Fitbit](http://www.fitbit.com), [Nike

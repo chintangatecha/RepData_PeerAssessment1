@@ -1,20 +1,49 @@
-# Reproducible Research: Peer Assessment 1
-
-
+# Reproducible Research:  Peer Assessment 1
+library(lattice)
+library(knitr)
 ## Loading and preprocessing the data
+activity.data<-read.csv("activity.csv")
+activity.data$date<-as.Date(activity.data$date, format = "%Y-%m-%d")
+total_days = as.numeric(max(activity.data$date) - min(activity.data$date) + 1)
+```{r}
+library(lattice)
+library(knitr)
 
+activity.data<-read.csv("activity.csv")
+activity.data$date<-as.Date(activity.data$date, format = "%Y-%m-%d")
+total_days = as.numeric(max(activity.data$date) - min(activity.data$date) + 1)
+```
+
+  
+```{r}
+activity.data$weekdays<-weekdays(activity.data$date)
+activity.data.nonNA <- activity.data[complete.cases(activity.data), ]
+```
 
 
 ## What is mean total number of steps taken per day?
 
-
+```{r}
+hist(tapply(activity.data.nonNA$steps, INDEX = activity.data.nonNA$date,sum, na.rm = TRUE), breaks = 10, xlim= c(0,25000), ylim = c(0,20), col= "orange", xlab = "Total steps", main = "Total steps frequency", ylab = "No of days")
+```
 
 ## What is the average daily activity pattern?
+```{r}
+hist(tapply(activity.data.nonNA$steps, INDEX = activity.data.nonNA$date,mean, na.rm = TRUE), breaks = 10, xlim= c(0,79), ylim = c(0,20), col= "orange", xlab = "mean of steps", main = "mean frequency", ylab = "No of days")
 
-
-
-## Imputing missing values
+```
 
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+```{r}
+weekdays<-subset(activity.data.nonNA, activity.data.nonNA$weekdays %in% c("Monday", "Tuesday","Wednesday", "Thursday", "Friday"))
+weekends<-subset(activity.data.nonNA, activity.data.nonNA$weekdays %in% c("Saturday","Sunday"))
+
+
+plot(tapply(weekends$steps, weekends$interval, FUN = mean), type = "l", xlab = "Interval", ylab= "avg steps", main = "Weekdays vs Weekends steps on interval", col="red", xlim= c(0,250), ylim=c(0,250))
+lines(tapply(weekdays$steps, weekdays$interval, FUN = mean), col= "blue")
+legend(1500, 230, c("Weekend", "Weekday "), lty = c(1, 1), lwd = c(1, 1), col = c("blue","red"))
+
+```
+
